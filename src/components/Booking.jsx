@@ -34,6 +34,7 @@ const Booking = () => {
       const res = await axios.get(
         `https://meddata-backend.onrender.com/data?state=${selectedState}&city=${selectedCity}`
       );
+      console.log(res.data)
       setResults(res.data);
     } catch (error) {
       console.error("Error fetching medical centers:", error);
@@ -41,12 +42,12 @@ const Booking = () => {
   };
 
   return (
-    <div className="bg-white p-6 max-w-2xl mx-auto border rounded-lg">
+    <div className="bg-white p-6 mx-auto rounded-lg">
       <h1 className="text-2xl font-bold mb-4">Search Medical Centers</h1>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-1 justify-between gap-4 border p-4 rounded">
         {/* State Dropdown */}
-        <div id="state" className="relative">
-          <label className="block mb-1 font-medium">Select State</label>
+        <div id="state" className="relative w-full">
+          <label className="mb-1 font-medium">Select State</label>
           <div
             className="border p-2 rounded cursor-pointer"
             onClick={() => setShowStates(!showStates)}
@@ -72,8 +73,8 @@ const Booking = () => {
           )}
         </div>
         {/* City Dropdown */}
-        <div id="city" className="relative">
-          <label className="block mb-1 font-medium">Select City</label>
+        <div id="city" className="relative w-full">
+          <label className="mb-1 font-medium">Select City</label>
           <div
             className="border p-2 rounded cursor-pointer"
             onClick={() => setShowCities(!showCities)}
@@ -101,7 +102,7 @@ const Booking = () => {
         {/* Search Button */}
         <button
           type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          className="bg-blue-600 text-white px-4 rounded hover:bg-blue-700"
           onClick={handleSearch}
           disabled={!selectedState || !selectedCity}
         >

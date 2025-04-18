@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import dayjs from "dayjs";
+import BookingSlot from "./BookingSlot";
 
 const timeSlots = {
   Morning: generateTimeSlots("08:00", "12:00"),
@@ -50,8 +51,8 @@ const Hospitals = ({ data }) => {
       {showDropdown && (
         <div className="mt-4 border p-3 rounded bg-gray-100">
           {/* Top Date Navigation */}
-          <div className="flex space-x-2 overflow-x-auto mb-4">
-            {dates.map((date, index) => (
+          {dates.map((date, index) => {
+            return (
               <button
                 key={index}
                 onClick={() => setSelectedDateIndex(index)}
@@ -61,29 +62,17 @@ const Hospitals = ({ data }) => {
                     : "bg-white border"
                 }`}
               >
-                {date}
+                {index === 0 ? <p>Today</p> : <p>{date}</p>}
               </button>
-            ))}
-          </div>
+            );
+          })}
 
           {/* Time Slot Table */}
-          <div className="grid grid-cols-3 gap-4">
-            {Object.entries(timeSlots).map(([label, times]) => (
-              <div key={label}>
-                <p className="font-semibold mb-2">{label}</p>
-                <div className="flex flex-wrap gap-2">
-                  {times.map((time, i) => (
-                    <div
-                      key={i}
-                      className="bg-white border px-3 py-1 rounded text-sm cursor-pointer hover:bg-blue-100"
-                    >
-                      {time}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+          <BookingSlot
+            date={dates[selectedDateIndex]}
+            timeSlots={timeSlots}
+            hospital={data}
+          />
         </div>
       )}
     </div>

@@ -8,6 +8,8 @@ const Booking = () => {
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [results, setResults] = useState([]);
+  const [showStates, setShowStates] = useState(false);
+  const [showCities, setShowCities] = useState(false);
 
   useEffect(() => {
     axios
@@ -16,7 +18,6 @@ const Booking = () => {
       .catch((err) => console.error("Error fetching states:", err));
   }, []);
 
-  // Fetch cities when a state is selected
   useEffect(() => {
     if (selectedState) {
       axios
@@ -33,7 +34,6 @@ const Booking = () => {
       const res = await axios.get(
         `https://meddata-backend.onrender.com/data?state=${selectedState}&city=${selectedCity}`
       );
-      console.log(res.data);
       setResults(res.data);
     } catch (error) {
       console.error("Error fetching medical centers:", error);
@@ -43,42 +43,64 @@ const Booking = () => {
   return (
     <div className="bg-white p-6 max-w-2xl mx-auto border rounded-lg">
       <h1 className="text-2xl font-bold mb-4">Search Medical Centers</h1>
-      <div className="flex justify-between items-center">
-        <div className="mb-4" id="state">
+      <div className="flex flex-col gap-4">
+        {/* State Dropdown */}
+        <div id="state" className="relative">
           <label className="block mb-1 font-medium">Select State</label>
-          <select
-            className="w-full border border-gray-300 p-2 rounded"
-            value={selectedState}
-            onChange={(e) => {
-              setSelectedState(e.target.value);
-              setSelectedCity(""); // reset city
-            }}
+          <div
+            className="border p-2 rounded cursor-pointer"
+            onClick={() => setShowStates(!showStates)}
           >
-            <option value="">-- Select State --</option>
-            {states.map((state, index) => (
-              <option key={index} value={state}>
-                {state}
-              </option>
-            ))}
-          </select>
+            {selectedState || "-- Select State --"}
+          </div>
+          {showStates && (
+            <ul className="absolute bg-white border w-full max-h-40 overflow-y-auto z-10">
+              {states.map((state, index) => (
+                <li
+                  key={index}
+                  className="p-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => {
+                    setSelectedState(state);
+                    setSelectedCity("");
+                    setShowStates(false);
+                  }}
+                >
+                  {state}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
-        <div className="mb-4" id="city">
+
+        {/* City Dropdown */}
+        <div id="city" className="relative">
           <label className="block mb-1 font-medium">Select City</label>
-          <select
-            className="w-full border border-gray-300 p-2 rounded"
-            value={selectedCity}
-            onChange={(e) => setSelectedCity(e.target.value)}
+          <div
+            className="border p-2 rounded cursor-pointer"
+            onClick={() => setShowCities(!showCities)}
           >
-            <option value="">-- Select City --</option>
-            {cities.map((city, index) => (
-              <option key={index} value={city}>
-                {city}
-              </option>
-            ))}
-          </select>
+            {selectedCity || "-- Select City --"}
+          </div>
+          {showCities && (
+            <ul className="absolute bg-white border w-full max-h-40 overflow-y-auto z-10">
+              {cities.map((city, index) => (
+                <li
+                  key={index}
+                  className="p-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => {
+                    setSelectedCity(city);
+                    setShowCities(false);
+                  }}
+                >
+                  {city}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
+
+        {/* Search Button */}
         <button
-          label="Search"
           type="submit"
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           onClick={handleSearch}
@@ -92,10 +114,12 @@ const Booking = () => {
       {results.length > 0 && (
         <div className="mt-6">
           <h2 className="text-xl font-semibold mb-2">Medical Centers</h2>
-          <h1>{results.length} medical centers available in {selectedCity}</h1>
+          <h1>
+            {results.length} medical centers available in {selectedCity}
+          </h1>
           <ul className="list-disc pl-5 space-y-1">
             {results.map((item, idx) => (
-              <Hospitals data={item} key={idx}/>
+              <Hospitals data={item} key={idx} />
             ))}
           </ul>
         </div>

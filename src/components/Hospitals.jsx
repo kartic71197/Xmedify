@@ -70,7 +70,7 @@ const Hospitals = ({ data }) => {
           <div className="grid grid-cols-3 gap-4">
             {Object.entries(timeSlots).map(([label, times]) => (
               <div key={label}>
-                <h4 className="font-semibold mb-2">{label}</h4>
+                <p className="font-semibold mb-2">{label}</p>
                 <div className="flex flex-wrap gap-2">
                   {times.map((time, i) => (
                     <div

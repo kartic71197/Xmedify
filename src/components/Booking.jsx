@@ -71,7 +71,6 @@ const Booking = () => {
             </ul>
           )}
         </div>
-
         {/* City Dropdown */}
         <div id="city" className="relative">
           <label className="block mb-1 font-medium">Select City</label>
@@ -113,10 +112,11 @@ const Booking = () => {
       {/* Results */}
       {results.length > 0 && (
         <div className="mt-6">
-          <h2 className="text-xl font-semibold mb-2">Medical Centers</h2>
           <h1>
-            {results.length} medical centers available in {selectedCity}
+            {results.length} medical centers available in{" "}
+            {selectedCity.toLowerCase()}
           </h1>
+
           <ul className="list-disc pl-5 space-y-1">
             {results.map((item, idx) => (
               <Hospitals data={item} key={idx} />

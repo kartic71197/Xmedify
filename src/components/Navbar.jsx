@@ -1,5 +1,6 @@
 import React from "react";
 import medifyLogo from "../assets/medify-logo.png";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
@@ -9,9 +10,11 @@ const Navbar = () => {
       </div>
       <div className="flex items-center justify-around space-x-8 text-black text-sm">
         {/* Example navigation items */}
-        <a href="#" className="hover:underline">
+        <Link to="/">
+        <p className="hover:underline">
           Find Doctors
-        </a>
+        </p>
+        </Link>
         <a href="#" className="hover:underline">
           Hospitals
         </a>
@@ -25,11 +28,13 @@ const Navbar = () => {
           Software for Provider
         </a>
         <a href="#" className="hover:underline">
-         Facilities
+          Facilities
         </a>
-        <button className="p-3 bg-blue-500 text-white rounded-lg">
+        <Link to="/my-bookings">
+          <button className="p-3 bg-blue-500 text-white rounded-lg">
             My Bookings
-        </button>
+          </button>
+        </Link>
       </div>
     </div>
   );

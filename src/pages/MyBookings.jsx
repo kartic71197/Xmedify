@@ -6,9 +6,21 @@ const MyBookings = () => {
   const [bookings, setBooking] = useState([]);
 
   useEffect(() => {
-    const data = localStorage.getItem('bookings');
-    if (data) {
-      setBooking(JSON.parse(data));
+    try {
+      const data = localStorage.getItem('bookings');
+      if (data) {
+        const parsed = JSON.parse(data);
+        if (Array.isArray(parsed)) {
+          setBooking(parsed);
+        } else {
+          setBooking([]); // fallback if not an array
+        }
+      } else {
+        setBooking([]);
+      }
+    } catch (err) {
+      console.error("Error parsing bookings from localStorage", err);
+      setBooking([]);
     }
   }, []);
 
